@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Frinder</string>
     <string name="warning_message">This application requires location permissions to be used. Please enable location permission or just uninstall the app.</string>
+    <string name="location_text">Latitude: %,.3f, Longtitude: %,.3f</string>
 </resources>

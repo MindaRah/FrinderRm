@@ -1,8 +1,14 @@
 package com.britishbroadcast.frinder
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -15,12 +21,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LocationListener {
 
     private val REQUEST_CODE = 100
 
     private lateinit var slideAnimation: Animation
     private lateinit var slideOutAnimation: Animation
+
+    private lateinit var locationManager: LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +36,12 @@ class MainActivity : AppCompatActivity() {
 
         slideAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left)
         slideOutAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right)
+
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+//        val connectivityManager: ConnectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//
+//        connectivityManager.isDefaultNetworkActive
 
         open_settings_button.setOnClickListener {
             startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).also {
@@ -38,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 it.data = uri
             })
         }
+
     }
 
     override fun onStart() {
@@ -58,7 +73,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun registerLocationListener() {
+
+        locationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            5000L,
+            100f,
+            this
+        )
 
     }
 
@@ -104,5 +127,12 @@ class MainActivity : AppCompatActivity() {
     private fun showOverLay() {
         overlay_view.visibility = View.VISIBLE
         overlay_view.animation = slideAnimation
+    }
+
+    override fun onLocationChanged(location: Location) {
+
+        Log.d("TAG_X", "location has been updated....${location}")
+        my_location_textview.text = getString(R.string.location_text, location.longitude, location.latitude)
+
     }
 }
