@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/movies_item"
+        android:icon="@drawable/ic_movies"
+        android:title="Movies" />
+
+    <item
+        android:id="@+id/soccer_item"
+        android:icon="@drawable/ic_soccer"
+        android:title="Soccer" />
+
+    <item
+        android:id="@+id/drinks_item"
+        android:icon="@drawable/ic_drinking"
+        android:title="Drinks" />
+
+    <item
+        android:id="@+id/food_item"
+        android:icon="@drawable/ic_food"
+        android:title="Food" />
+</menu>
