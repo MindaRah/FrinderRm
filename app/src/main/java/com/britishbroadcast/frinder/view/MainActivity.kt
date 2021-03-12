@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -16,17 +15,25 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.PopupMenu
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
 import com.britishbroadcast.frinder.R
+import com.britishbroadcast.frinder.model.data.HangoutPlace
+import com.britishbroadcast.frinder.util.Type
+import com.britishbroadcast.frinder.viewmodel.FrinderViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
 
@@ -38,6 +45,13 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
     private lateinit var locationManager: LocationManager
 
     private lateinit var map: GoogleMap
+
+    private val viewModel by viewModels<FrinderViewModel>()
+
+    private var locationString = "0,0"
+    private var radius = 2000
+    private var type: Type = Type.restaurant
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +76,21 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        viewModel.placeLiveData.observe(this, Observer{
+            Log.d("TAG_X", "Results retrieved -> ${it.size}")
+
+            updateMap(it)
+        })
+
+    }
+
+    private fun updateMap(hangoutPlaces: List<HangoutPlace>) {
+        hangoutPlaces.forEach {
+            val loc = LatLng(it.geometry.location.lat, it.geometry.location.lng)
+            map.addMarker(MarkerOptions()
+                .position(loc).title(it.name))
+            //map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 10f))
+        }
     }
 
     override fun onStart() {
@@ -140,6 +169,7 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
 
     override fun onLocationChanged(location: Location) {
         Log.d("TAG_X", "Location is ready....")
+
         if (this::map.isInitialized) {
             val myLocation = LatLng(location.latitude, location.longitude)
             map.addMarker(MarkerOptions()
@@ -147,17 +177,13 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
                     .position(myLocation).title("I'm Waldo"))
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 10f))
 
-//            map.addCircle(
-//                    CircleOptions()
-//                            .center(myLocation)
-//                            .radius(1000.00)
-//                            .strokeColor(R.color.black)
-//                            .strokeWidth(2f)
-//                            .fillColor(R.color.alpha_blue))
+            locationString = "${myLocation.latitude},${myLocation.longitude}"
+            viewModel.findHangoutPlace(locationString, radius, type.name)
         }
 
     }
 
+    @SuppressLint("RestrictedApi")
     fun onMenuClick(view: View){
         val animation = AnimationUtils.loadAnimation(this, R.anim.scale_up)
         view.startAnimation(animation)
@@ -165,30 +191,41 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
         val menu = PopupMenu(this, view)
         menu.inflate(R.menu.main_menu)
 
-//        val mInflater = menu.menuInflater
-//        mInflater.inflate(R.menu.main_menu, menu.menu)
-
         menu.setOnMenuItemClickListener {
-            when(it.itemId){
+            type = when(it.itemId){
                 R.id.drinks_item -> {
                     //Get drink locations
+                    Type.bar
                 }
                 R.id.food_item -> {
                     //Get restaurant locations
+                    Type.restaurant
                 }
                 R.id.soccer_item -> {
                     //Get soccer locations
+                    //stadium -> ground
+                    Type.stadium
                 }
                 else -> {
                     //Get movie theater locations
+                    Type.movie_theater
                 }
             }
+            //map.clear()//->adding items to map
+            viewModel.findHangoutPlace(locationString, radius, type.name)
             true
         }
 
-        menu.show()
+        //menu.show()
+        val m = MenuPopupHelper(this, menu.menu as MenuBuilder, view )
+        m.setForceShowIcon(true)
+        m.show()
 
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        locationManager.removeUpdates(this)
     }
 
     override fun onMapReady(map: GoogleMap) {
