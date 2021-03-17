@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "hangouts" )
 data class HangoutPlace(
     val business_status: String,
     val geometry: Geometry,
