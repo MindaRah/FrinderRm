@@ -1,4 +1,4 @@
-package com.britishbroadcast.frinder.view
+package com.britishbroadcast.frinder.view.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -25,6 +25,7 @@ import androidx.lifecycle.Observer
 import com.britishbroadcast.frinder.R
 import com.britishbroadcast.frinder.model.data.HangoutPlace
 import com.britishbroadcast.frinder.util.Type
+import com.britishbroadcast.frinder.view.adapter.PlacesMarkerAdapter
 import com.britishbroadcast.frinder.viewmodel.FrinderViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -35,7 +36,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback, PlacesMarkerAdapter.PlacesMarkerDelegate {
 
     private val REQUEST_CODE = 100
 
@@ -46,11 +47,15 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
 
+    private var placesMarkerAdapter: PlacesMarkerAdapter = PlacesMarkerAdapter(mutableListOf(), this)
+
     private val viewModel by viewModels<FrinderViewModel>()
 
     private var locationString = "0,0"
     private var radius = 2000
     private var type: Type = Type.restaurant
+
+    
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -221,6 +226,11 @@ class MainActivity : AppCompatActivity(), LocationListener, OnMapReadyCallback {
         m.setForceShowIcon(true)
         m.show()
 
+    }
+
+    override fun selectPlacesMarker(hangoutPlace: HangoutPlace) {
+        val latLng = LatLng(hangoutPlace.geometry.location.lat, hangoutPlace.geometry.location.lng)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
     }
 
     override fun onDestroy() {

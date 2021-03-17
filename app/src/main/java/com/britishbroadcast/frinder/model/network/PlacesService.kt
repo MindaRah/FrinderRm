@@ -20,6 +20,10 @@ interface PlacesService {
     //* Completable - emit only the method onCompleted or onError
     //* Maybe - Decides whether a subscription can be completed ot not. Value, no value or exception
 
+   // @GET(GET_PLACES)
+   // fun getPlaces(@Query(LOCATION) location: String, @Query(RADIUS) radius: Int, @Query(TYPE) type: String, @Query(KEY) apiKey: String): Single<PlaceResponse>
+
+
     @GET(GET_PLACES)
     fun getPlaces(@Query(LOCATION) location: String, @Query(RADIUS) radius: Int, @Query(TYPE) type: String, @Query(KEY) apiKey: String): Single<PlaceResponse>
 }

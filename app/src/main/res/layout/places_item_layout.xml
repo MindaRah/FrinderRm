@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/main_cardView"
+        android:layout_width="350dp"
+        android:layout_height="600dp"
+        android:backgroundTint="#FFF9EB"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="8dp"
+        app:cardCornerRadius="60dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/business_name_textView"
+                style="@style/Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_8dp"
+                android:gravity="center"
+                android:text="@string/business_name_text"
+                app:layout_constraintBottom_toTopOf="@id/business_address_textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Business Name" />
+
+            <TextView
+                android:id="@+id/business_address_textView"
+                style="@style/Address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_16dp"
+                android:text="@string/business_name_text"
+                android:textSize="22sp"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@id/icons_cardView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/business_name_textView"
+                tools:text="Business Address" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/icons_cardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_8dp"
+                android:backgroundTint="#FFEEC2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/business_address_textView"
+                app:layout_constraintBottom_toTopOf="@id/business_open_textView"
+                app:cardCornerRadius="100dp"
+                style="@style/CardViewStyle"
+                >
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/business_icon_imageView"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="64dp"
+                    tools:src="@tools:sample/avatars"
+                    />
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
+            <TextView
+                android:id="@+id/business_open_textView"
+                style="@style/MainTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_32dp"
+                android:text="@string/business_open_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/business_rating_textView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icons_cardView"
+                tools:text="OPEN" />
+
+            <TextView
+                android:id="@+id/business_rating_textView"
+                style="@style/MainTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_32dp"
+                android:text="@string/business_rating_text"
+                app:layout_constraintBottom_toBottomOf="@+id/business_open_textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/business_open_textView"
+                app:layout_constraintTop_toTopOf="@+id/business_open_textView"
+                tools:text="RATING" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

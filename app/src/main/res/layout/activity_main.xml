@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_launcher_background"
-    tools:context=".view.MainActivity">
+    tools:context=".view.activity.MainActivity">
 
     <ImageView
         android:id="@+id/menu_imageview"
@@ -17,9 +17,25 @@
         android:layout_margin="16dp"
         android:elevation="8dp"
         android:onClick="onMenuClick"
-        android:src="@drawable/ic_menu"
-        />
+        android:src="@drawable/ic_menu" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".6"/>
+
+    <FrameLayout
+        android:id="@+id/frame_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideLine_main"
+        android:elevation="16dp"
+        android:layout_margin="@dimen/margin_layout_16dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/overlay_view"
@@ -45,14 +61,14 @@
 
         <Button
             android:id="@+id/open_settings_button"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/margin_layout_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="Open Settings"
-            />
+            android:backgroundTint="@color/alpha_blue"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -61,6 +77,33 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.MapsActivity" />
+        tools:context=".view.activity.MapsActivity" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/recyclerV_cardV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideLine_main"
+        android:layout_margin="@dimen/margin_layout_16dp"
+        app:cardCornerRadius="@dimen/layout_margin_8dp"
+        app:cardBackgroundColor="@color/teal_200">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_layout_16dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerV_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_layout_16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

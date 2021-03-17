@@ -3,4 +3,13 @@
     <string name="warning_message">This application requires location permissions to be used. Please enable location permission or just uninstall the app.</string>
     <string name="location_text">Latitude: %,.3f, Longtitude: %,.3f</string>
     <string name="title_activity_maps">Map</string>
+    <string name="pager_text">%s</string>
+    <string name="business_name_text">%s</string>
+    <string name="business_operational_text">%s</string>
+    <string name="business_open_text">%s</string>
+    <string name="business_rating_text">Rating: %s</string>
+    <string name="business_type_text">Type</string>
+    <string name="activity_maps">Activity Maps</string>
+    <string name="places_marker_name">Marker</string>
+    <string name="places_marker_address">Places Address</string>
 </resources>
